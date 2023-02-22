@@ -71,9 +71,20 @@ def get_word_score(word, n):
     n: integer (HAND_SIZE; i.e., hand size required for additional points)
     returns: int >= 0
     """
-    # TO DO ... <-- Remove this comment when you code this function
-
-
+    try:
+        assert len(word) <= n
+        word.lower()
+        score = 0
+        for letter in word:
+            score += SCRABBLE_LETTER_VALUES[letter]
+        score *= len(word)
+        return score + 50 if len(word) == n else score
+    except AttributeError:
+        print("Need word what do not contain number")
+    except TypeError:
+        print("Either your hand or word contain number")
+    except AssertionError:
+        print("your word is higher than your hand size")
 
 
 #
@@ -136,7 +147,7 @@ def update_hand(hand, word):
     Assumes that 'hand' has all the letters in word.
     In other words, this assumes that however many times
     a letter appears in 'word', 'hand' has at least as
-    many of that letter in it. 
+    many of that letter in it.
 
     Updates the hand: uses up the letters in the given word
     and returns the new hand, without those letters in it.
@@ -144,7 +155,7 @@ def update_hand(hand, word):
     Has no side effects: does not modify hand.
 
     word: string
-    hand: dictionary (string -> int)    
+    hand: dictionary (string -> int)
     returns: dictionary (string -> int)
     """
     # TO DO ... <-- Remove this comment when you code this function
@@ -172,7 +183,7 @@ def is_valid_word(word, hand, word_list):
 #
 
 def calculate_hand_len(hand):
-    """ 
+    """
     Returns the length (number of letters) in the current hand.
 
     hand: dictionary (string-> int)
@@ -186,7 +197,7 @@ def play_hand(hand, word_list, n):
     Allows the user to play the given hand, as follows:
 
     * The hand is displayed.
-    * The user may input a word or a single period (the string ".") 
+    * The user may input a word or a single period (the string ".")
       to indicate they're done playing
     * Invalid words are rejected, and a message is displayed asking
       the user to choose another word until they enter a valid word or "."
@@ -245,7 +256,7 @@ def play_game(word_list):
       * If the user inputs 'e', exit the game.
       * If the user inputs anything else, tell them their input was invalid.
 
-    2) When done playing the hand, repeat from step 1    
+    2) When done playing the hand, repeat from step 1
     """
     # TO DO ... <-- Remove this comment when you code this function
     # <-- Remove this line when you code the function

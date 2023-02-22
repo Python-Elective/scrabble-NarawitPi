@@ -71,10 +71,8 @@ def get_word_score(word, n):
     n: integer (HAND_SIZE; i.e., hand size required for additional points)
     returns: int >= 0
     """
-    # TO DO ... <-- Remove this comment when you code this function
-
-    word.lower()
-    word.lower()
+    try:
+        word.lower()
     score = 0
     if len(word) == 0:
         return 0
