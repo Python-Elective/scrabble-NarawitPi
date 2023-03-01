@@ -72,14 +72,19 @@ def get_word_score(word, n):
     returns: int >= 0
     """
     try:
+        assert len(word) <= n
         word.lower()
-    score = 0
-    if len(word) == 0:
-        return 0
-    for letter in word:
-        score += SCRABBLE_LETTER_VALUES[letter]
-    score *= len(word)
-    return score + 50 if len(word) == n else score
+        score = 0
+        for letter in word:
+            score += SCRABBLE_LETTER_VALUES[letter]
+        score *= len(word)
+        return score + 50 if len(word) == n else score
+    except AttributeError:
+        print("Need word what do not contain number")
+    except TypeError:
+        print("Either your hand or word contain number")
+    except AssertionError:
+        print("your word is higher than your hand size")
 
 
 #
@@ -90,7 +95,7 @@ def display_hand(hand):
     Displays the letters currently in the hand.
 
     For example:
-    >>> display_hand({'a':1, 'x':2, 'l':3, 'e':1})
+    #>>> display_hand({'a':1, 'x':2, 'l':3, 'e':1})
     Should print out something like:
        a x x l l l e
     The order of the letters is unimportant.
@@ -99,7 +104,7 @@ def display_hand(hand):
     """
     for letter in hand.keys():
         for j in range(hand[letter]):
-            print(letter, end=" ")       # print all on the same line
+            print(letter, end=" ")     # print all on the same line
     print()                             # print an empty line
 
 #
@@ -155,6 +160,17 @@ def update_hand(hand, word):
     """
     # TO DO ... <-- Remove this comment when you code this function
 
+    assert type(word) == str
+    assert type(hand) == dict
+
+    nextHand = hand.copy()
+
+    for letter in word:
+        nextHand[letter] -= 1
+        if nextHand[letter] == 0:
+            del nextHand[letter]
+    return nextHand
+
 
 #
 # Problem #3: Test word validity
@@ -172,6 +188,17 @@ def is_valid_word(word, hand, word_list):
     """
     # TO DO ... <-- Remove this comment when you code this function
 
+    hand_copy = hand.copy()
+    try :
+        assert word in word_list
+        for letter in word:
+            assert letter in hand
+            assert hand_copy[letter] > 0
+            hand_copy[letter] = hand_copy[letter] - 1
+        return True
+    except  AssertionError:
+        return False
+
 
 #
 # Problem #4: Playing a hand
@@ -185,6 +212,13 @@ def calculate_hand_len(hand):
     returns: integer
     """
     # TO DO... <-- Remove this comment when you code this function
+
+    number = 0
+    for piece in hand.values():
+        number += piece
+    return number
+
+
 
 
 def play_hand(hand, word_list, n):
@@ -212,29 +246,44 @@ def play_hand(hand, word_list, n):
     # BEGIN PSEUDOCODE <-- Remove this comment when you code this function; do your coding within the pseudocode (leaving those comments in-place!)
     # Keep track of the total score
 
+    score = 0
+
     # As long as there are still letters left in the hand:
+    while calculate_hand_len(hand) != 0:
+
 
     # Display the hand
+        print("Current Hand: ", end="")
+        display_hand(hand)
 
     # Ask user for input
-
+        word = input(f"Enter word, or a \".\" to indicate that you are finished: ")
     # If the input is a single period:
-
+        if word == ".":
     # End the game (break out of the loop)
-
+            print(f"Goodbye! Total score: {score} points.\n\n")
+            break
     # Otherwise (the input is not a single period):
 
     # If the word is not valid:
 
+        if is_valid_word(word, hand, word_list) == False:
+
     # Reject invalid word (print a message followed by a blank line)
+            print("Invalid word, please try again.", end="\n\n")
 
     # Otherwise (the word is valid):
+        else:
 
     # Tell the user how many points the word earned, and the updated total score, in one line followed by a blank line
-
+            point = get_word_score(word, n)
+            score += point
+            print(f"\"{word}\" earned {point} points. The total score is {score} point", end="\n\n")
     # Update the hand
+            hand = update_hand(hand, word)
 
     # Game is over (user entered a '.' or ran out of letters), so tell user the total score
+    #print(f"TURN OVER.... \nYour total score is {score}", end="\n\n")
 
 
 #
@@ -255,7 +304,23 @@ def play_game(word_list):
     """
     # TO DO ... <-- Remove this comment when you code this function
     # <-- Remove this line when you code the function
-    print("play_game not yet implemented.")
+
+    while True:
+        start = input("Enter n to deal a new hand, r to replay the last hand, or e to end game: ")
+
+        try:
+            if start == "n":
+                hand = deal_hand(HAND_SIZE)
+                play_hand(hand, word_list, HAND_SIZE)
+            elif start == "r":
+                play_hand(hand, word_list, HAND_SIZE)
+            elif start == "e":
+                break
+            else:
+                print("Invalid command")
+        except UnboundLocalError:
+            print("You have not played a hand yet. Please play a new hand first!")
+
 
 
 #
