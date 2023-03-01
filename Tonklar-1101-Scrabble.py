@@ -213,6 +213,8 @@ def calculate_hand_len(hand):
     """
     # TO DO... <-- Remove this comment when you code this function
 
+    assert type(hand) == dict
+
     number = 0
     for piece in hand.values():
         number += piece
@@ -315,6 +317,7 @@ def play_game(word_list):
             elif start == "r":
                 play_hand(hand, word_list, HAND_SIZE)
             elif start == "e":
+                print('BYE!')
                 break
             else:
                 print("Invalid command")
