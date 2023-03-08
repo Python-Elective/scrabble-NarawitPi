@@ -71,6 +71,11 @@ def get_word_score(word, n):
     n: integer (HAND_SIZE; i.e., hand size required for additional points)
     returns: int >= 0
     """
+    assert type(word) == str, "type mismatch in function get_word_score()"
+    assert len(word) > 0, "word length must not be zero in get_word_score() "
+    assert word.islower() == True, f"{word} must be lowercase in get_word_score()"
+    assert type(n) == int, "type mismatch in function get_word_score()"
+    assert n > 0, "hand size must not be zero in get_word_score()"
     try:
         assert len(word) <= n
         word.lower()
@@ -163,13 +168,13 @@ def update_hand(hand, word):
     assert type(word) == str
     assert type(hand) == dict
 
-    nextHand = hand.copy()
+    next_hand = hand.copy()
 
     for letter in word:
-        nextHand[letter] -= 1
-        if nextHand[letter] == 0:
-            del nextHand[letter]
-    return nextHand
+        next_hand[letter] -= 1
+        if next_hand[letter] == 0:
+            del next_hand[letter]
+    return next_hand
 
 
 #
