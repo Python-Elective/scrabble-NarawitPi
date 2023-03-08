@@ -85,7 +85,7 @@ def get_word_score(word, n):
         score *= len(word)
         return score + 50 if len(word) == n else score
     except AttributeError:
-        print("Need word what do not contain number")
+        print("Need word that do not contain number")
     except TypeError:
         print("Either your hand or word contain number")
     except AssertionError:
