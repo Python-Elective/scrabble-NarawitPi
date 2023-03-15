@@ -289,6 +289,8 @@ def play_hand(hand, word_list, n):
     # Update the hand
             hand = update_hand(hand, word)
 
+    if calculate_hand_len(hand) == 0:
+        print(f"Run out of letters. Total score: {score} points.")
     # Game is over (user entered a '.' or ran out of letters), so tell user the total score
     #print(f"TURN OVER.... \nYour total score is {score}", end="\n\n")
 
